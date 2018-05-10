@@ -1,7 +1,8 @@
 // Author       : Logan Hammond; hamm32637@email.ccbcmd.edu
 // Source File  : Validate.cpp
-// Description  : 
-// IDE Used     : Microsoft Visual Studio 2017
+// Description  : Validate class. Takes a string and has functions to state password creation rules and
+//                  determine if string follows password creation rules. 
+// IDE Used     : Microsoft Visual Studio 2017.
 
 #include "Validate.h"   // Function declarations in header. 
 #include <iostream>     // I/O. 
