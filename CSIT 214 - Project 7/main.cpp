@@ -14,20 +14,57 @@ int main() {
 	string lastName = "";
 	string password = "";
 	string confirmationPass = "";
-	string login = "";
 	vector<string> loginVector;
-    bool passHasError = true;
+    bool passwordHasError = false;
 
 	cout << "\n\tFirst Name: ";
-	cin >> firstName;
-	while (firstName != "0") {
+    getline(cin, firstName);
+	while (firstName != "0") {  // Loop does not start when '0' is entered for first name. 
 		cout << "\tLast Name : ";
-		cin >> lastName;
+        getline(cin, lastName);
 
-        Validate message("");
-        message.displayMsg();
-        cout << "\n\n\tEnter Password: ";
-        cin >> password;
+        Validate message(""); // Can't call objects functions using default constructor.
+        message.displayMsg(); 
+
+        // Password validation. 
+        do {
+            cout << "\n\n\tEnter Password: ";
+            getline(cin, password);
+            Validate passwordV(password); 
+            
+            // Seperate bools for each condition.
+            bool isShort, hasSpaces, hasCaptial;
+            isShort = passwordV.checkLength();
+            if (!isShort) {
+                passwordHasError = true;
+            }
+            hasSpaces = passwordV.checkSpaces();
+            if (hasSpaces) {
+                passwordHasError = true;
+            }
+            hasCaptial = passwordV.checkUpper();
+            if (!hasCaptial) {
+                passwordHasError = true;
+            }
+
+            if (passwordHasError) {
+                cout << "\n\tPlease choose another password.";
+            }
+
+            /*
+            if (!passwordV.checkLength() || passwordV.checkSpaces() || passwordV.checkUpper()) {
+                passwordHasError = true; 
+                cout << "\n\tPlease try a different password."; 
+            }
+            else {
+                passwordHasError = false; 
+            }
+            */
+
+        } while (passwordHasError); 
+
+        // Password confirmation. 
+        /*
         do {
             cout << "\tRe-enter Password: ";
             cin >> confirmationPass;
@@ -35,36 +72,19 @@ int main() {
                 cout << "\n\tPasswords do not match. Please try again.\n";
             }
         } while (confirmationPass != password);
+        */
 
-        // Password validation goes here 
-        do {
-            Validate message("");
-            message.displayMsg();
-            cout << "\n\n\tEnter Password: ";
-            cin >> password;
-
-            Validate password(password);
-            if (password.checkLength() || password.checkSpaces() || password.checkUpper()) {
-                passHasError = true;
-                cout << "\n\tPlease try a different password.";
-            }
-            else {
-                passHasError = false;
-            }
-        } while (passHasError);
-
-
-		login = firstName.substr(0, 1) + lastName.substr(0, 5) + ", " + password;
+        string login = firstName.substr(0, 1) + lastName.substr(0, 5) + ", " + password;
 		loginVector.push_back(login);
 		cout << "\n\tFirst Name: ";
 		cin >> firstName;
 	} 
 
-    // Displays elements of loginVector. Humanly readable.
-    int i = 0;
+    // Displays elements of loginVector.
+    int loginElement = 0;
     for (vector<string>::iterator it = loginVector.begin(); it != loginVector.end(); ++it) {
-        cout << "\n\tLogin " << i+1 << ": " << loginVector[i];
-        i++;
+        cout << "\n\tLogin " << (loginElement + 1) << ": " << loginVector[loginElement];
+        loginElement++;
     }
 
 	cout << "\n\n\t";

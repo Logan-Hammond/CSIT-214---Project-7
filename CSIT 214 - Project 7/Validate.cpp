@@ -3,26 +3,27 @@
 // Description  : 
 // IDE Used     : Microsoft Visual Studio 2017
 
-#include "Validate.h" 
-#include <iostream> 
-#include <string> 
-#include <cctype> // isupper function.
+#include "Validate.h"   // Function declarations in header. 
+#include <iostream>     // I/O. 
+#include <string>       // 'string' data type. 
+#include <cctype>       // 'isupper' function. 
 using namespace std; 
 
 // Array containing error messages. 
 string errorArray[3] = { "Error: Password must be at least six characters.", "Error: Password can not contain any spaces.",
                             "Error: Password must have at least one uppercase character." };
 const int LEN = 6;	// Minimum password length.
-string entry;
+string entry = "";  // Global password string.
+
 
 // Constructors and destructor. 
 Validate::Validate(string s) {
 	entry = s;
 }
 Validate::Validate() {}
-Validate::~Validate() {} 
+Validate::~Validate() {}
 
-
+// Function definitions. 
 /*
 	Displays rules for password creation.
 	@return void.
@@ -35,29 +36,35 @@ void Validate::displayMsg() {
 }
 
 /*
-    Checks length of password.
+    Determines if password is of sufficient length.
     @return TRUE if password is sufficient length; FALSE otherwise.
 */
 bool Validate::checkLength() {
-	if (entry.length() < 6) {
-		cout << "\n\t" + errorArray[1];
-		return true;
-	}
-	return false;
+    bool hasAppropriateLength = false;
+    if (entry.length() >= LEN) { 
+        hasAppropriateLength = true;
+    }
+    else {
+        cout << "\n\t" + errorArray[0];
+    }
+	return hasAppropriateLength;
 }
 
 /*
-    Checks if password contains any spaces.
+    Determines if password contains any spaces. 
     @return TRUE if password contains any spaces; FALSE otherwise.
 */
-bool Validate::checkSpaces() {
-	for (int i = 0; i < entry.length(); i++) {
-		if (entry[i] == ' ') {
-			cout << "\n\t" + errorArray[2];
-			return true;
-		}
+bool Validate::checkSpaces() { 
+    bool hasSpaces = false;
+    for (int i = 0; i < entry.length(); i++) {
+		if (isspace(entry[i])) {
+			hasSpaces = true;
+        }
 	}
-	return false;
+    if (hasSpaces) {
+        cout << "\n\t" + errorArray[1];
+    }
+	return hasSpaces;
 }
 
 /*
@@ -66,11 +73,13 @@ bool Validate::checkSpaces() {
 */
 bool Validate::checkUpper() {
 	bool hasUppercaseChar = false;
-	
 	for (int i = 0; i < entry.length(); i++) {
 		if (isupper(entry[i])) {
 			hasUppercaseChar = true;
 		}
 	}
+    if (!hasUppercaseChar) {
+        cout << "\n\t" + errorArray[2];
+    }
 	return hasUppercaseChar;
 }
